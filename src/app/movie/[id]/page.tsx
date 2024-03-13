@@ -2,10 +2,11 @@ import createApolloClient from "../../utils/apolloclient";
 import gql from "graphql-tag";
 import { Movie, ReviewResults } from "../../api/graphql/movies-data-resource";
 import MovieDetailSection from "../../../components/moviedetailsection";
+import ReviewsSection from "../../../components/reviewssection";
 
 async function Page({ params }: { params: { id: string } }) {
   const client = createApolloClient();
-  const [{ data }, { data:reviewData }] = await Promise.all([
+  let [{ data }, { data: reviewData }] = await Promise.all([
     client.query<{ getMovie: Movie }>({
       query: gql`
         query GetMovieQuery($id: Int!) {
@@ -43,15 +44,17 @@ async function Page({ params }: { params: { id: string } }) {
       `,
       variables: {
         id: parseInt(params.id),
-      }
+      },
     }),
   ]);
-
-  console.log(reviewData);
 
   return (
     <main className="flex min-h-screen flex-col ">
       <MovieDetailSection movie={data.getMovie} />
+      <ReviewsSection reviews={reviewData.getMovieReviews} />
+      {/* <div className="px-24 py-4 bg-base-200">
+        <Editor />
+      </div> */}
     </main>
   );
 }
