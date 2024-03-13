@@ -1,4 +1,4 @@
-import { CacheOptions, RESTDataSource, RequestDeduplicationPolicy, RequestOptions } from "@apollo/datasource-rest";
+import { RESTDataSource } from "@apollo/datasource-rest";
 
 export type Movie = {
   adult: boolean;
@@ -29,7 +29,6 @@ export class MoviesAPI extends RESTDataSource {
   override baseURL?: string | undefined = process.env.MOVIE_API_URL;
 
   async getPopularMovies(page: number = 1) {
-    console.log("getPopularMovies");
     try{
       const data: PopularMovieResults = await this.get(`${this.baseURL}/movie/popular`, {
         params: {
@@ -46,7 +45,6 @@ export class MoviesAPI extends RESTDataSource {
       });
       return data;
     } catch (error) {
-      console.error(error);
       return {
         results: [],
         page: 0,

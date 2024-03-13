@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const createApolloClient = () => {
   return new ApolloClient({
-    uri: "http://localhost:3001/api/graphql",
+    uri: "https://movie-app-ashy-psi.vercel.app/api/graphql",
     cache: new InMemoryCache(),
   });
 };
