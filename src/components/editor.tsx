@@ -16,6 +16,7 @@ export default function Editor({
 }) {
   const [content, setContent] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState(false);
 
   const quillModules = {
     toolbar: [
@@ -47,11 +48,18 @@ export default function Editor({
   ];
 
   const handleEditorChange = (newContent: string) => {
+    if (error) {
+      setError(false);
+    }
     setContent(newContent);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!content) {
+      setError(true);
+      return;
+    }
     onSubmit({
       variables: {
         review: {
@@ -87,6 +95,7 @@ export default function Editor({
               formats={quillFormats}
               className="mt-10 w-full bg-black"
             />
+            {error && <p className="text-red-500">Please enter a review</p>}
             <button
               type="submit"
               className="bg-blue-500 text-white p-2 rounded-md mt-4"
