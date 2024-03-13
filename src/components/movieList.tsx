@@ -2,11 +2,20 @@
 
 import React, { useState } from "react";
 import MovieCard from "./moviecard";
-import { Movie, PopularMovieResults } from "../app/api/graphql/movies-data-resource";
+import {
+  Movie,
+  PopularMovieResults,
+} from "../app/api/graphql/movies-data-resource";
 import Paginator from "./paginator";
 import SearchBar from "./searchbar";
 
-function MovieList({data, page} : {data: PopularMovieResults, page:number}) {
+function MovieList({
+  data,
+  page,
+}: {
+  data: PopularMovieResults;
+  page: number;
+}) {
   return (
     <div className="flex flex-col m-6 gap-6">
       <div className="flex justify-center">

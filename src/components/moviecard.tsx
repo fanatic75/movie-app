@@ -8,7 +8,11 @@ export default function MovieCard({
   movie: Pick<Movie, "id" | "title" | "release_date" | "poster_path">;
 }) {
   return (
-    <a href={`/movie/${movie?.id}`} key={movie?.id} className="card shadow-xl bg-base-200 max-w-[342px]">
+    <a
+      href={`/movie/${movie?.id}`}
+      key={movie?.id}
+      className="card shadow-xl bg-base-200 max-w-[342px]"
+    >
       <figure>
         <Image
           src={getPosterUrl({

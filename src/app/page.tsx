@@ -1,8 +1,6 @@
 import createApolloClient from "./utils/apolloclient";
 import gql from "graphql-tag";
-import {
-  PopularMovieResults,
-} from "./api/graphql/movies-data-resource";
+import { PopularMovieResults } from "./api/graphql/movies-data-resource";
 import MovieList from "../components/movieList";
 
 export default async function Home({

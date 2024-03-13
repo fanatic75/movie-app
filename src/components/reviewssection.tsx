@@ -1,5 +1,5 @@
 import { Review } from "../app/api/graphql/movies-data-resource";
-
+import DOMPurify from "isomorphic-dompurify";
 function ReviewsSection({ reviews }: { reviews: Review[] }) {
   return (
     <div className="flex flex-col items-center mt-4">
@@ -14,7 +14,12 @@ function ReviewsSection({ reviews }: { reviews: Review[] }) {
               {`A review by `}
               <span className="text-bold text-xl">{review.author}</span>{" "}
             </h3>
-            <p className="text-neutral-content break-words">{review.content}</p>
+            <p
+              className="text-neutral-content break-words"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(review.content),
+              }}
+            ></p>
           </div>
         ))}
       </div>

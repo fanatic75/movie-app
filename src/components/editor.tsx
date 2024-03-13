@@ -2,11 +2,20 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import { NewReview } from "../lib/db";
+
 
 const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 
-export default function Editor() {
+export default function Editor({
+  onSubmit,
+  movieId,
+}: {
+  onSubmit: (({variables:{review}}: {variables:{review:NewReview}})=>void);
+  movieId: number;
+}) {
   const [content, setContent] = useState("");
+  const [name, setName] = useState("");
 
   const quillModules = {
     toolbar: [
@@ -41,11 +50,34 @@ export default function Editor() {
     setContent(newContent);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit({
+      variables: {
+        review: {
+          author: name,
+          content,
+          movieId,
+        },
+      },
+    });
+    setContent("");
+    setName("");
+  };
+
   return (
     <div className="flex bg-base-200 items-center flex-col">
       <div className="w-full flex flex-col">
         <div className="text-3xl font-semibold text-accent">Write a review</div>
-        <form>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            required={true}
+            value={name}
+            placeholder="Your name"
+            onChange={(e) => setName(e.target.value)}
+            className="p-2 mt-4"
+          />
           <div className="flex flex-col">
             <QuillEditor
               placeholder="Enter your review"
@@ -55,7 +87,10 @@ export default function Editor() {
               formats={quillFormats}
               className="mt-10 w-full bg-black"
             />
-            <button className="bg-blue-500 text-white p-2 rounded-md mt-4">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white p-2 rounded-md mt-4"
+            >
               Submit
             </button>
           </div>

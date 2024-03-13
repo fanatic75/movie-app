@@ -7,11 +7,17 @@ function MovieDetailSection({ movie }: { movie: Movie }) {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl text-accent font-bold mb-4">{movie.title}</h2>
-            <p className="text-lg text-neutral-content mb-6">{movie.overview}</p>
-            
+            <h2 className="text-3xl text-accent font-bold mb-4">
+              {movie.title}
+            </h2>
+            <p className="text-lg text-neutral-content mb-6">
+              {movie.overview}
+            </p>
+
             <div className="flex items-center">
-              <span className="text-sm text-neutral-content mr-2">Release Date:</span>
+              <span className="text-sm text-neutral-content mr-2">
+                Release Date:
+              </span>
               <span className="text-lg text-neutral-content font-semibold">
                 {movie.release_date}
               </span>
@@ -35,6 +41,5 @@ function MovieDetailSection({ movie }: { movie: Movie }) {
     </section>
   );
 }
-
 
 export default MovieDetailSection;

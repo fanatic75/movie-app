@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import React from "react";
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { URL } from "url";
 
 type PaginatorProps = {
@@ -12,7 +12,7 @@ function Paginator({ totalPages }: PaginatorProps) {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
   if (totalPages == null) return null;
-  const currentPage = Number(searchParams.get('page')) || 1;
+  const currentPage = Number(searchParams.get("page")) || 1;
   const firstVisiblePage = Math.max(1, currentPage - 2);
   const lastVisiblePage = Math.min(totalPages, currentPage + 2);
   const isVisibleFirstPage = firstVisiblePage === 1;
@@ -20,8 +20,8 @@ function Paginator({ totalPages }: PaginatorProps) {
 
   function onPageSelect(page: number) {
     const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
-    replace (`${pathname}?${params.toString()}`);
+    params.set("page", page.toString());
+    replace(`${pathname}?${params.toString()}`);
   }
 
   return (
