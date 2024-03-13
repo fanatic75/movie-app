@@ -1,5 +1,6 @@
 import { RESTDataSource } from "@apollo/datasource-rest";
-
+import { db, NewReview, ReviewsTable } from "@/lib/db";
+import { desc, eq } from "drizzle-orm";
 export type Movie = {
   adult: boolean;
   backdrop_path: string;
@@ -35,73 +36,93 @@ export type Review = {
   author: string;
   content: string;
   id: string;
-  url: string;
-  created_at: string;
-  updated_at: string;
-  author_details:{
-    name:string;
-    username:string;
-    avatar_path:string;
-    rating:number;
-  };
-}
-
-export type ReviewResults = {
-  id: number;
-  page:number;
-  results: Review[];
-  total_pages: number;
-  total_results: number;
-}
+};
 
 export class MoviesAPI extends RESTDataSource {
   override baseURL?: string | undefined = process.env.MOVIE_API_URL;
 
   async getPopularMovies(page: number = 1) {
-    const data: PopularMovieResults = await this.get(
-      `${this.baseURL}/movie/popular`,
-      {
-        params: {
-          language: "en-US",
-          page: page.toString(),
-          api_key: process.env.MOVIE_API_KEY,
-        },
-        headers: {
-          ContentType: "application/json",
-        },
-      }
-    );
-    return data;
+    try {
+      const data: PopularMovieResults = await this.get(
+        `${this.baseURL}/movie/popular`,
+        {
+          params: {
+            language: "en-US",
+            page: page.toString(),
+            api_key: process.env.MOVIE_API_KEY,
+          },
+          headers: {
+            ContentType: "application/json",
+          },
+        }
+      );
+      return data;
+    } catch (e) {
+      return {
+        results: [],
+        page: 0,
+        total_results: 0,
+        total_pages: 0,
+      };
+    }
   }
 
   async getMovie(id: number) {
-    const data = await this.get<Movie>(`${this.baseURL}/movie/${id}`, {
-      params: {
-        language: "en-US",
-        api_key: process.env.MOVIE_API_KEY,
-      },
-    });
-    return data
+    try {
+      const data = await this.get<Movie>(`${this.baseURL}/movie/${id}`, {
+        params: {
+          language: "en-US",
+          api_key: process.env.MOVIE_API_KEY,
+        },
+      });
+      return data;
+    } catch (err) {
+      return null;
+    }
   }
 
   async getMovieReviews(id: number) {
-    const data = await this.get<ReviewResults>(`${this.baseURL}/movie/${id}/reviews`, {
-      params: {
-        language: "en-US",
-        page: "1",
-        api_key: process.env.MOVIE_API_KEY,
-      },
-    });
-    return data
+    try {
+      const data = await db
+        .select()
+        .from(ReviewsTable)
+        .where(eq(ReviewsTable.movieId, id))
+        .limit(10)
+        .orderBy(desc(ReviewsTable.id));
+      return data;
+    } catch (err) {
+      return [];
+    }
+  }
+
+  async insertMovieReview(review: NewReview) {
+    try {
+      const data = await db.insert(ReviewsTable).values(review).returning();
+      return data[0];
+    } catch (err) {
+      return null;
+    }
   }
 
   async searchMovie(title: string) {
-    return this.get<SearchMovieResults>(`${this.baseURL}/search/movie?query=${title}`, {
-      params: {
-        language: "en-US",
-        api_key: process.env.MOVIE_API_KEY,
-        page: "1"
-      }
-    })
+    try{
+      return this.get<SearchMovieResults>(
+        `${this.baseURL}/search/movie?query=${title}`,
+        {
+          params: {
+            language: "en-US",
+            api_key: process.env.MOVIE_API_KEY,
+            page: "1",
+          },
+        }
+      );
+    }catch(err){
+      return {
+        page: 0,
+        results: [],
+        total_pages: 0,
+        total_results: 0,
+      };
+    }
   }
 }

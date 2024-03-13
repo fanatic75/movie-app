@@ -6,7 +6,7 @@ import "react-quill/dist/quill.snow.css"; // Import Quill styles
 const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function Editor() {
-  const [content, setContent] = useState("Enter your review");
+  const [content, setContent] = useState("");
 
   const quillModules = {
     toolbar: [
@@ -48,6 +48,7 @@ export default function Editor() {
         <form>
           <div className="flex flex-col">
             <QuillEditor
+              placeholder="Enter your review"
               value={content}
               onChange={handleEditorChange}
               modules={quillModules}

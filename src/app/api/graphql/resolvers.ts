@@ -1,5 +1,5 @@
-import { get } from "http";
 import { ContextValue } from "./route";
+import { NewReview } from "@/lib/db";
 
 export const resolvers = {
   Query: {
@@ -31,6 +31,15 @@ export const resolvers = {
       { dataSources }: ContextValue
     ) => {
       return dataSources.moviesAPI.getMovieReviews(id);
+    },
+  },
+  Mutation: {
+    insertMovieReview: async (
+      _: unknown,
+      { review }: { review: NewReview },
+      { dataSources }: ContextValue
+    ) => {
+      return dataSources.moviesAPI.insertMovieReview(review);
     },
   },
 };
