@@ -8,7 +8,7 @@ function ReviewsSection({ reviews }: { reviews: ReviewResults }) {
         {reviews.results.map((review) => (
           <div
             key={review.id}
-            className="flex card shadow-xl bg-base-200  flex-col p-4"
+            className="flex card w-full shadow-xl bg-base-200  flex-col p-4"
           >
             <h3 className=" align-center text-accent my-2">
               {`A review by `}<span className="text-bold text-xl">{review.author}</span> {review.author_details.rating}

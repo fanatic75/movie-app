@@ -51,7 +51,7 @@ async function Page({ params }: { params: { id: string } }) {
   return (
     <main className="flex min-h-screen flex-col ">
       <MovieDetailSection movie={data.getMovie} />
-      <ReviewsSection reviews={reviewData.getMovieReviews} />
+      {reviewData.getMovieReviews.results.length > 0 && <ReviewsSection reviews={reviewData.getMovieReviews}/>}
       {/* <div className="px-24 py-4 bg-base-200">
         <Editor />
       </div> */}
