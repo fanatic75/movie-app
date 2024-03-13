@@ -4,14 +4,16 @@ function ReviewsSection({ reviews }: { reviews: ReviewResults }) {
   return (
     <div className="flex flex-col items-center mt-4">
       <h2 className="text-3xl font-bold">Reviews</h2>
-      <div className="flex  flex-col items-center px-24 py-4 gap-4">
+      <div className="flex  flex-col items-center px-4 md:px-8 lg:px-24 py-4 gap-4">
         {reviews.results.map((review) => (
           <div
             key={review.id}
-            className="flex card w-full shadow-xl bg-base-200  flex-col p-4"
+            className="flex card w-full shadow-xl bg-base-200 flex-col p-4"
           >
             <h3 className=" align-center text-accent my-2">
-              {`A review by `}<span className="text-bold text-xl">{review.author}</span> {review.author_details.rating}
+              {`A review by `}
+              <span className="text-bold text-xl">{review.author}</span>{" "}
+              {review.author_details.rating}
               <svg
                 className="inline-flex w-4 h-4 text-yellow-300 mb-1"
                 aria-hidden="true"
