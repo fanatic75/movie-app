@@ -19,7 +19,6 @@ function Paginator({ totalPages }: PaginatorProps) {
   const isVisibleLastPage = lastVisiblePage === totalPages;
 
   function onPageSelect(page: number) {
-    
     const params = new URLSearchParams(searchParams);
     params.set('page', page.toString());
     replace (`${pathname}?${params.toString()}`);

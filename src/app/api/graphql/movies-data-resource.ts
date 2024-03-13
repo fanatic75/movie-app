@@ -24,42 +24,84 @@ export type PopularMovieResults = {
   total_pages: number;
 };
 
+export type SearchMovieResults = {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+};
+
+export type Review = {
+  author: string;
+  content: string;
+  id: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
+  author_details:{
+    name:string;
+    username:string;
+    avatar_path:string;
+    rating:number;
+  };
+}
+
+export type ReviewResults = {
+  id: number;
+  page:number;
+  results: Review[];
+  total_pages: number;
+  total_results: number;
+}
 
 export class MoviesAPI extends RESTDataSource {
   override baseURL?: string | undefined = process.env.MOVIE_API_URL;
 
   async getPopularMovies(page: number = 1) {
-    try{
-      const data: PopularMovieResults = await this.get(`${this.baseURL}/movie/popular`, {
+    const data: PopularMovieResults = await this.get(
+      `${this.baseURL}/movie/popular`,
+      {
         params: {
           language: "en-US",
           page: page.toString(),
           api_key: process.env.MOVIE_API_KEY,
         },
-        cacheOptions: {
-          ttl: 0,
+        headers: {
+          ContentType: "application/json",
         },
-        headers:{
-          ContentType: "application/json"
-        }
-      });
-      return data;
-    } catch (error) {
-      return {
-        results: [],
-        page: 0,
-        total_results: 0,
-        total_pages: 0
       }
-    }  
+    );
+    return data;
   }
 
   async getMovie(id: number) {
-    return this.get(`${this.baseURL}/movie/${id}`, {
+    const data = await this.get<Movie>(`${this.baseURL}/movie/${id}`, {
       params: {
         language: "en-US",
         api_key: process.env.MOVIE_API_KEY,
       },
     });
+    return data
+  }
+
+  async getMovieReviews(id: number) {
+    const data = await this.get<ReviewResults>(`${this.baseURL}/movie/${id}/reviews`, {
+      params: {
+        language: "en-US",
+        page: "1",
+        api_key: process.env.MOVIE_API_KEY,
+      },
+    });
+    return data
+  }
+
+  async searchMovie(title: string) {
+    return this.get<SearchMovieResults>(`${this.baseURL}/search/movie?query=${title}`, {
+      params: {
+        language: "en-US",
+        api_key: process.env.MOVIE_API_KEY,
+        page: "1"
+      }
+    })
   }
 }

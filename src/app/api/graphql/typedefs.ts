@@ -24,9 +24,44 @@ export const typeDefs = gql`
     total_pages: Int
   }
 
+  type SearchMovieResults{
+    page: Int
+    results: [Movie]
+    total_pages: Int
+    total_results: Int
+  }
+
+  type Review {
+    author: String
+    content: String
+    id: String
+    url: String
+    created_at: String
+    updated_at: String
+    author_details: AuthorDetails
+  }
+
+  type AuthorDetails{
+    name: String
+    username: String
+    avatar_path: String
+    rating: Int
+  }
+
+  type ReviewResults{
+    id: Int
+    page: Int
+    results: [Review]
+    total_pages: Int
+    total_results: Int
+  }
+
+
   type Query {
     popularMovies(page: Int): PopularMovieResults
     getMovie(id: Int): Movie
+    searchMovie(title: String): SearchMovieResults
+    getMovieReviews(id: Int): ReviewResults
   }
   
 `;
