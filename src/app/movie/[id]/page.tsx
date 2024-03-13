@@ -21,7 +21,7 @@ async function Page({ params }: { params: { id: string } }) {
         id: parseInt(params.id),
       },
     }),
-    client.query<{ getReview: ReviewResults }>({
+    client.query<{ getMovieReviews: ReviewResults }>({
       query: gql`
         query getReview($id: Int!) {
           getMovieReviews(id: $id) {
@@ -47,7 +47,7 @@ async function Page({ params }: { params: { id: string } }) {
     }),
   ]);
 
-  console.log(reviewData.getReview);
+  console.log(reviewData);
 
   return (
     <main className="flex min-h-screen flex-col ">
