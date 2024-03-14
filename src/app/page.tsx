@@ -1,7 +1,7 @@
 import createApolloClient from "./utils/apolloclient";
-import gql from "graphql-tag";
-import { PopularMovieResults } from "./api/graphql/movies-data-resource";
+import { PopularMovieResults } from "@/types/types";
 import MovieList from "../components/movieList";
+import { GET_POPULAR_MOVIES } from "./queries/movie";
 
 export default async function Home({
   searchParams,
@@ -11,22 +11,10 @@ export default async function Home({
   const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
   const client = createApolloClient();
 
-  const { data } = await client.query<{ popularMovies: PopularMovieResults }>({
-    query: gql`
-      query GetPopularMovies($page: Int!) {
-        popularMovies(page: $page) {
-          results {
-            id
-            title
-            poster_path
-            release_date
-          }
-          page
-          total_results
-          total_pages
-        }
-      }
-    `,
+  const { data } = await client.query<{
+    getPopularMovies: PopularMovieResults;
+  }>({
+    query: GET_POPULAR_MOVIES,
     variables: {
       page: currentPage,
     },
@@ -34,7 +22,7 @@ export default async function Home({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <MovieList data={data.popularMovies} page={currentPage} />
+      <MovieList data={data.getPopularMovies} page={currentPage} />
     </main>
   );
 }

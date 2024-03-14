@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Movie } from "../app/api/graphql/movies-data-resource";
+import { Movie } from "@/types/types";
 import { getPosterUrl } from "../lib/tmdbImage";
 import Image from "next/image";
 export default function MovieCard({

@@ -5,9 +5,9 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   Movie,
   SearchMovieResults,
-} from "../app/api/graphql/movies-data-resource";
-import gql from "graphql-tag";
+} from "@/types/types";
 import createApolloClient from "../app/utils/apolloclient";
+import { SEARCH_MOVIE_QUERY } from "../app/queries/movie";
 
 export default function SearchBar() {
   const [title, setTitle] = useState("");
@@ -31,19 +31,7 @@ export default function SearchBar() {
     const { data } = await apolloclient.query<{
       searchMovie: SearchMovieResults;
     }>({
-      query: gql`
-        query GetMovie($title: String!) {
-          searchMovie(title: $title) {
-            results {
-              id
-              title
-            }
-            page
-            total_results
-            total_pages
-          }
-        }
-      `,
+      query: SEARCH_MOVIE_QUERY,
       variables: {
         title: title,
       },

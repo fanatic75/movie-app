@@ -5,7 +5,7 @@ import MovieCard from "./moviecard";
 import {
   Movie,
   PopularMovieResults,
-} from "../app/api/graphql/movies-data-resource";
+} from "@/types/types";
 import Paginator from "./paginator";
 import SearchBar from "./searchbar";
 

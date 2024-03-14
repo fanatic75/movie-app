@@ -1,4 +1,4 @@
-import { Movie } from "../app/api/graphql/movies-data-resource";
+import { Movie } from "@/types/types";
 import Image from "next/image";
 import { getPosterUrl } from "../lib/tmdbImage";
 function MovieDetailSection({ movie }: { movie: Movie }) {
